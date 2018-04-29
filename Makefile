@@ -15,6 +15,7 @@ $(objects) :%.o : %.cpp
 	@mkdir -p ./bin$
 	$(cc) -c $(CFLAGS) $< -o $@
 	$(cc) $(CFLAGS) $< -o $(subst .o, ,$(EXE_DIR)/$@) $(LFLAGS) $(LIBS)
+test:
 clean:
 	@rm -f *.o rm -f $(executables)
 	@rm -rf ./bin 

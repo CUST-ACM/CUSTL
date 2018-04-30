@@ -1,4 +1,4 @@
-/* file: test_vector.h
+/* file: vector_demo.h
  * date: 2018/04/29
  * author: axp (Xiao Peng)
  */

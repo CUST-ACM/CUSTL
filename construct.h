@@ -9,6 +9,7 @@
 #include <new>
 
 #include "iterator.h"
+#include "type_traits.h"
 
 namespace custl {
 // By axp:
@@ -26,15 +27,15 @@ inline void destory(T* p) {
     p->~T();
 }
 template <typename ForwardIterator>
-inline void __destory_aux(ForwardIterator first, ForwardIterator last) {
+inline void __destory_aux(ForwardIterator first, ForwardIterator last, __false_type) {
     for (; first < last; ++first)
         destory(&*first);
 }
-//TODO(axp):
-//需要增加type_traits判断trival_type，现在默认为non-trival_type
+template <typename ForwardIterator>
+inline void __destory_aux(ForwardIterator first, ForwardIterator last, __true_type) {}
 template <typename ForwardIterator, typename T>
 inline void __destory(ForwardIterator first, ForwardIterator last, T*) {
-    __destory_aux(first, last);
+    __destory_aux(first, last, typename type_traits<T>::is_trivially_constructible());
 }
 template <typename ForwardIterator>
 inline void destory(ForwardIterator first, ForwardIterator last) {

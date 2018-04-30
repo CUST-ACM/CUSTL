@@ -26,7 +26,7 @@ public:
     ~allocator(){}
 
     static pointer allocate(size_type n, const void* = 0) {
-        return static_cast<pointer>(new T[n]);
+        return static_cast<pointer>(operator new (n * sizeof(T)));
     }
     static void deallocate(pointer p, size_type) {
         delete p;

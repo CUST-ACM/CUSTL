@@ -90,12 +90,12 @@ public:
 
 protected:
 	typedef allocator<_list_node<T> >				_list_node_allocator;
-	typedef _list_node<T>							_list_node;
+	typedef _list_node<T>							list_node;
 	
 	link_type _node;
 	
 	static link_type allocate() {
-		return (link_type)Alloc::allocate(sizeof(_list_node));
+		return (link_type)Alloc::allocate(sizeof(list_node));
 	}
 
 	link_type _get_node() {

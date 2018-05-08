@@ -1,6 +1,14 @@
+/**
+ * Title: Rb Tree
+ * Description: CUSTL Red-Black Tree
+ * Author: F-TD5X(jhx)
+ * Update: 2018-05-08 20:11
+ **/
+
 #ifndef _CUSTL_TREE_H
 #define _CUSTL_TREE_H
 
+#include <iterator>
 #include <utility>
 #include "../allocator.h"
 
@@ -31,12 +39,12 @@ template <typename _Val>
 struct _Rb_tree_node : public _Rb_tree_node_base {
     typedef _Rb_tree_node<_Val>* _Link_type;
     _Val _M_Val_field;
-    _Val* _M_valptr() {return std::__addressof(_M_Val_field);}
-    const _Val* _M_valptr() const {return std::__addressof(_M_Val_field);}
+    _Val* _M_valptr() { return std::__addressof(_M_Val_field); }
+    const _Val* _M_valptr() const { return std::__addressof(_M_Val_field); }
 };
 
 template <typename _Val>
-struct _Rb_tree_iterator{
+struct _Rb_tree_iterator {
     typedef _Val value_type;
     typedef _Val& reference;
     typedef _Val* pointer;
@@ -50,12 +58,16 @@ struct _Rb_tree_iterator{
 
     _Rb_tree_iterator() {}
     _Rb_tree_iterator(_Base_ptr __x) : _M_node(__x) {}
-    _Rb_tree_iterator(_Link_type __x) {_M_node = __x;}
-    _Rb_tree_iterator(const _Self& __it) :_M_node(__it._M_node) {}
+    _Rb_tree_iterator(_Link_type __x) { _M_node = __x; }
+    _Rb_tree_iterator(const _Self& __it) : _M_node(__it._M_node) {}
 
-    reference operator*() const { return *static_cast<_Link_type>(_M_node)->_M_valptr();}
-    pointer operator->() const { return static_cast<_Link_type>(_M_node)->_M_valptr(); }
-    
+    reference operator*() const {
+        return *static_cast<_Link_type>(_M_node)->_M_valptr();
+    }
+    pointer operator->() const {
+        return static_cast<_Link_type>(_M_node)->_M_valptr();
+    }
+
     _Self operator++() {
         _M_increment();
         return *this;
@@ -108,17 +120,21 @@ struct _Rb_tree_iterator{
     }
 
     _Base_ptr _M_node;
-    bool operator==(const _Rb_tree_iterator &__x)const {return _M_node == __x._M_node;}
-    bool operator!=(const _Rb_tree_iterator &__x)const {return _M_node != __x._M_node;}
+    bool operator==(const _Rb_tree_iterator& __x) const {
+        return _M_node == __x._M_node;
+    }
+    bool operator!=(const _Rb_tree_iterator& __x) const {
+        return _M_node != __x._M_node;
+    }
 };
 
 template <typename _Val>
-struct _Rb_tree_const_iterator{
+struct _Rb_tree_const_iterator {
     typedef _Val value_type;
     typedef const _Val& reference;
     typedef const _Val* pointer;
 
-    typedef _Rb_tree_iterator<_Val> iterator;    
+    typedef _Rb_tree_iterator<_Val> iterator;
 
     typedef _Rb_tree_const_iterator<_Val> _Self;
     typedef const _Rb_tree_node<_Val>* _Link_type;
@@ -131,10 +147,16 @@ struct _Rb_tree_const_iterator{
     _Rb_tree_const_iterator(const _Self& __it) : _M_node(__it._M_node) {}
     _Rb_tree_const_iterator(const iterator& __it) : _M_node(__it._M_node) {}
 
-    iterator _M_const_cast() const {return iterator(const_cast<typename iterator::_Base_ptr>(_M_node));}
+    iterator _M_const_cast() const {
+        return iterator(const_cast<typename iterator::_Base_ptr>(_M_node));
+    }
 
-    reference operator*() const { return *static_cast<_Link_type>(_M_node)->_M_valptr(); }
-    pointer operator->() const { return static_cast<_Link_type>(_M_node)->_M_valptr(); }
+    reference operator*() const {
+        return *static_cast<_Link_type>(_M_node)->_M_valptr();
+    }
+    pointer operator->() const {
+        return static_cast<_Link_type>(_M_node)->_M_valptr();
+    }
     _Self operator++() {
         _M_increment();
         return *this;
@@ -188,17 +210,21 @@ struct _Rb_tree_const_iterator{
 
     _Base_ptr _M_node;
 
-    bool operator==(const _Rb_tree_const_iterator &__x) const {return _M_node == __x._M_node;}
-    bool operator!=(const _Rb_tree_const_iterator &__x) const {return _M_node != __x._M_node;}
+    bool operator==(const _Rb_tree_const_iterator& __x) const {
+        return _M_node == __x._M_node;
+    }
+    bool operator!=(const _Rb_tree_const_iterator& __x) const {
+        return _M_node != __x._M_node;
+    }
 };
 
-template<typename _T>
+template <typename _T>
 inline bool operator==(const _Rb_tree_iterator<_T>& __x,
                        const _Rb_tree_const_iterator<_T>& __y) {
     return __x._M_node == __y._M_node;
 }
 
-template<typename _T>
+template <typename _T>
 inline bool operator!=(const _Rb_tree_iterator<_T>& __x,
                        const _Rb_tree_const_iterator<_T>& __y) {
     return __x._M_node != __y._M_node;
@@ -962,7 +988,7 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::count(
     const _Key& __k) const {
     std::pair<const_iterator, const_iterator> __p = equal_range(__k);
     size_type __n = 0;
-    distance(__p.first, __p.second, __n);
+    __n = distance(__p.first, __p.second);
     return __n;
 }
 

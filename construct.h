@@ -23,23 +23,23 @@ inline void construct(T1* p, const T2& value) {
     new(p) T1(value);
 }
 template <typename T>
-inline void destory(T* p) {
+inline void destroy(T* p) {
     p->~T();
 }
 template <typename ForwardIterator>
-inline void __destory_aux(ForwardIterator first, ForwardIterator last, __false_type) {
+inline void __destroy_aux(ForwardIterator first, ForwardIterator last, __false_type) {
     for (; first < last; ++first)
-        destory(&*first);
+        destroy(&*first);
 }
 template <typename ForwardIterator>
-inline void __destory_aux(ForwardIterator first, ForwardIterator last, __true_type) {}
+inline void __destroy_aux(ForwardIterator first, ForwardIterator last, __true_type) {}
 template <typename ForwardIterator, typename T>
-inline void __destory(ForwardIterator first, ForwardIterator last, T*) {
-    __destory_aux(first, last, typename type_traits<T>::is_trivially_constructible());
+inline void __destroy(ForwardIterator first, ForwardIterator last, T*) {
+    __destroy_aux(first, last, typename type_traits<T>::is_trivially_constructible());
 }
 template <typename ForwardIterator>
-inline void destory(ForwardIterator first, ForwardIterator last) {
-    __destory(first, last, value_type(first));
+inline void destroy(ForwardIterator first, ForwardIterator last) {
+    __destroy(first, last, value_type(first));
 }
 }; // namespace custl
 

@@ -309,7 +309,7 @@ void deque<T, BufSize>::push_front(const value_type& t) {
 
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::pop_front_aux() {
-    destory(start.cur);
+    destroy(start.cur);
     deallocate_node(start.first);
     start.set_node(start.node + 1);
     start.cur = start.first;
@@ -318,7 +318,7 @@ void deque<T, BufSize>::pop_front_aux() {
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::pop_front() {
     if(start.cur != start.last) {
-        destory(start.cur);
+        destroy(start.cur);
         ++start.cur;
     }
     else
@@ -330,14 +330,14 @@ void deque<T, BufSize>::pop_back_aux() {
     deallocate_node(finish.first);
     finish.set_node(finish.node - 1);
     finish.cur = finish.last;
-    destory(finish.cur);
+    destroy(finish.cur);
 }
 
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::pop_back() {
     if(finish.cur != finish.first) {
         --finish.cur;
-        destory(finish.cur);
+        destroy(finish.cur);
     }
     else
         pop_back_aux();
@@ -346,17 +346,17 @@ void deque<T, BufSize>::pop_back() {
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::clear() {
     for(map_pointer cur = start.node + 1; cur < finish.node; ++cur) {
-        destory(*cur, *cur + buffer_size());
+        destroy(*cur, *cur + buffer_size());
         deallocate_node(*cur);
     }
     
     if(start.node != finish.node) {
-        destory(start.cur, start.last);
-        destory(finish.first, finish.cur);
+        destroy(start.cur, start.last);
+        destroy(finish.first, finish.cur);
         deallocate_node(finish.first);
     }
     else
-        destory(start.cur, finish.cur);
+        destroy(start.cur, finish.cur);
     finish = start;
 }
 

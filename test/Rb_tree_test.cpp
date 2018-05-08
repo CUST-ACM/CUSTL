@@ -39,9 +39,10 @@ int main() {
     // Find test
     for (int i = 1; i <= 10; i++) tree.insert_unique(i);
 
-    for (int i = 1; i <= 10; i++)
+    for (int i = 1; i <= 10; i++){
         assert(custl::distance(tree.begin(), tree.lower_bound(i)) == i - 1);
-        assert(custl::distance(tree.begin(),tree.upper_bound(i) == i);
+        assert(custl::distance(tree.begin(),tree.upper_bound(i)) == i);
+	}
     
 
 

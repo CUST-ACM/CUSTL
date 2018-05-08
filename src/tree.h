@@ -31,13 +31,49 @@ template <typename _Val>
 struct _Rb_tree_node : public _Rb_tree_node_base {
     typedef _Rb_tree_node<_Val>* _Link_type;
     _Val _M_Val_field;
+    _Val* _M_valptr() {return std::__addressof(_M_Val_field);}
+    const _Val* _M_valptr() const {return std::__addressof(_M_Val_field);}
 };
 
-struct _Rb_tree_base_iterator {
+template <typename _Val>
+struct _Rb_tree_iterator{
+    typedef _Val value_type;
+    typedef _Val& reference;
+    typedef _Val* pointer;
+
+    typedef _Rb_tree_iterator<_Val> _Self;
+    typedef _Rb_tree_node<_Val>* _Link_type;
+
     typedef _Rb_tree_node_base::_Base_ptr _Base_ptr;
     typedef bidirectional_iterator_tag iterator_category;
     typedef ptrdiff_t difference_type;
-    _Base_ptr _M_node;
+
+    _Rb_tree_iterator() {}
+    _Rb_tree_iterator(_Base_ptr __x) : _M_node(__x) {}
+    _Rb_tree_iterator(_Link_type __x) {_M_node = __x;}
+    _Rb_tree_iterator(const _Self& __it) :_M_node(__it._M_node) {}
+
+    reference operator*() const { return *static_cast<_Link_type>(_M_node)->_M_valptr();}
+    pointer operator->() const { return static_cast<_Link_type>(_M_node)->_M_valptr(); }
+    
+    _Self operator++() {
+        _M_increment();
+        return *this;
+    }
+    _Self operator++(int) {
+        _Self __tmp = *this;
+        _M_increment();
+        return __tmp;
+    }
+    _Self operator--() {
+        _M_decrement();
+        return *this;
+    }
+    _Self operator--(int) {
+        _Self __tmp = *this;
+        _M_decrement();
+        return __tmp;
+    }
 
     void _M_increment() {
         if (_M_node->_M_right != nullptr) {
@@ -70,24 +106,35 @@ struct _Rb_tree_base_iterator {
             _M_node = __y;
         }
     }
+
+    _Base_ptr _M_node;
+    bool operator==(const _Rb_tree_iterator &__x)const {return _M_node == __x._M_node;}
+    bool operator!=(const _Rb_tree_iterator &__x)const {return _M_node != __x._M_node;}
 };
 
 template <typename _Val>
-struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
+struct _Rb_tree_const_iterator{
     typedef _Val value_type;
-    typedef _Val& reference;
-    typedef _Val* pointer;
-    typedef _Rb_tree_iterator<_Val> iterator;
-    typedef const _Rb_tree_iterator<_Val> const_iterator;
-    typedef _Rb_tree_iterator<_Val> _Self;
-    typedef _Rb_tree_node<_Val>* _Link_type;
+    typedef const _Val& reference;
+    typedef const _Val* pointer;
 
-    _Rb_tree_iterator() {}
-    _Rb_tree_iterator(_Link_type __x) { _M_node = __x; }
-    _Rb_tree_iterator(const iterator& __it) { _M_node = __it._M_node; }
+    typedef _Rb_tree_iterator<_Val> iterator;    
 
-    reference operator*() const { return _Link_type(_M_node)->_M_Val_field; }
-    pointer operator->() const { return &(operator*()); }
+    typedef _Rb_tree_const_iterator<_Val> _Self;
+    typedef const _Rb_tree_node<_Val>* _Link_type;
+    typedef _Rb_tree_node_base::_Base_ptr _Base_ptr;
+    typedef bidirectional_iterator_tag iterator_category;
+    typedef ptrdiff_t difference_type;
+
+    _Rb_tree_const_iterator() {}
+    _Rb_tree_const_iterator(const _Base_ptr __x) : _M_node(__x) {}
+    _Rb_tree_const_iterator(const _Self& __it) : _M_node(__it._M_node) {}
+    _Rb_tree_const_iterator(const iterator& __it) : _M_node(__it._M_node) {}
+
+    iterator _M_const_cast() const {return iterator(const_cast<typename iterator::_Base_ptr>(_M_node));}
+
+    reference operator*() const { return *static_cast<_Link_type>(_M_node)->_M_valptr(); }
+    pointer operator->() const { return static_cast<_Link_type>(_M_node)->_M_valptr(); }
     _Self operator++() {
         _M_increment();
         return *this;
@@ -106,15 +153,54 @@ struct _Rb_tree_iterator : public _Rb_tree_base_iterator {
         _M_decrement();
         return __tmp;
     }
+
+    void _M_increment() {
+        if (_M_node->_M_right != nullptr) {
+            _M_node = _M_node->_M_right;
+            while (_M_node->_M_left != nullptr) _M_node = _M_node->_M_left;
+        } else {
+            _Base_ptr __y = _M_node->_M_parent;
+            while (_M_node == __y->_M_right) {
+                _M_node = __y;
+                __y = __y->_M_parent;
+            }
+            if (_M_node->_M_right != __y) _M_node = __y;
+        }
+    }
+
+    void _M_decrement() {
+        if (_M_node->_M_color == red &&
+            _M_node->_M_parent->_M_parent == _M_node)
+            _M_node = _M_node->_M_right;
+        else if (_M_node->_M_right != nullptr) {
+            _Base_ptr __y = _M_node->_M_left;
+            while (__y->_M_right != nullptr) __y = __y->_M_right;
+            _M_node = __y;
+        } else {
+            _Base_ptr __y = _M_node->_M_parent;
+            while (_M_node == __y->_M_left) {
+                _M_node = __y;
+                __y = __y->_M_parent;
+            }
+            _M_node = __y;
+        }
+    }
+
+    _Base_ptr _M_node;
+
+    bool operator==(const _Rb_tree_const_iterator &__x) const {return _M_node == __x._M_node;}
+    bool operator!=(const _Rb_tree_const_iterator &__x) const {return _M_node != __x._M_node;}
 };
 
-inline bool operator==(const _Rb_tree_base_iterator& __x,
-                       const _Rb_tree_base_iterator& __y) {
+template<typename _T>
+inline bool operator==(const _Rb_tree_iterator<_T>& __x,
+                       const _Rb_tree_const_iterator<_T>& __y) {
     return __x._M_node == __y._M_node;
 }
 
-inline bool operator!=(const _Rb_tree_base_iterator& __x,
-                       const _Rb_tree_base_iterator& __y) {
+template<typename _T>
+inline bool operator!=(const _Rb_tree_iterator<_T>& __x,
+                       const _Rb_tree_const_iterator<_T>& __y) {
     return __x._M_node != __y._M_node;
 }
 
@@ -190,7 +276,7 @@ inline void _Rb_tree_rebalance(_Rb_tree_node_base* __x,
             }
         }
     }
-    __root->_M_color = black;  // 根节点永远为黑
+    __root->_M_color = black;
 }
 
 inline _Rb_tree_node_base* _Rb_tree_rebalance_for_erase(
@@ -418,7 +504,7 @@ class _Rb_tree {
 
    public:
     typedef _Rb_tree_iterator<_Val> iterator;
-    typedef _Rb_tree_iterator<_Val> const_iterator;
+    typedef _Rb_tree_const_iterator<_Val> const_iterator;
 
    private:
     iterator _M_insert(_Base_ptr __x, _Base_ptr __y, const value_type& __v);

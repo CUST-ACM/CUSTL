@@ -118,6 +118,6 @@ inline void advance(InputIterator& it, Distance n) {
     __advance(it, n, iterator_category(it));
 }
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_ITERATOR_H

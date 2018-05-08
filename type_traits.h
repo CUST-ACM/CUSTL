@@ -68,6 +68,6 @@ struct type_traits<T*> {
     typedef __true_type       is_trivially_constructible;
 };
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_TYPE_TRAITS_H

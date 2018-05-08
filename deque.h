@@ -1,14 +1,14 @@
-/*-----------------------------------------------
-*   Filename: deque.h
-*   Author: zhuyutian
-*   Date: 2018.04.30
------------------------------------------------*/
+/* file: deque.h
+ * date: 2018/04/30
+ * author: zhuyutian
+ */
 
 #ifndef _CUSTL_DEQUE_H
 #define _CUSTL_DEQUE_H
 
-#include "config.h"
+
 #include "allocator.h"
+#include "config.h"
 
 namespace custl{
 
@@ -41,14 +41,12 @@ struct __deque_iterator {
         first = *new_node;
         last = first + difference_type(buffer_size());
     }
-
     reference operator*() const { return *cur; }
     pointer operator->() const { return &(operator*()); }
     difference_type operator-(const self& x) const {
         return difference_type(buffer_size()) * (node - x.node - 1) + 
             (cur - first) + (x.last - x.cur);
     }
-
     self& operator++() {
         ++cur;
         if(cur == last) {
@@ -57,13 +55,11 @@ struct __deque_iterator {
         }
         return *this;
     }
-
     self operator++(int) { //后置式写法
         self tmp = *this;
         ++*this;
         return tmp;
     }
-
     self& operator--() {
         if(cur == first){
             set_node(node - 1);
@@ -72,13 +68,11 @@ struct __deque_iterator {
         --cur;
         return *this;
     }
-
     self operator--(int) { 
         self tmp = *this;
         --*this;
         return tmp;
     }
-
     self& operator+=(difference_type n) {
         difference_type offset = n + (cur - first);
         if(offset >= 0 && offset < difference_type(buffer_size())) 
@@ -92,21 +86,16 @@ struct __deque_iterator {
         }
         return *this;
     }
-
     self operator+(difference_type n) const {
         self tmp = *this;
         return tmp += n;
     }
-
     self& operator-=(difference_type n) { return *this += -n; }
-    
     self operator-(difference_type n) {
         self tmp = *this;
         return tmp -= n;
     }
-
     reference operator[](difference_type n) const { return *(*this + n); }
-
     bool operator==(const self& x) const { return cur == x.cur; }
     bool operator!=(const self& x) const { return !(*this == x); }
     bool operator<(const self& x) const {
@@ -130,11 +119,10 @@ protected:
 
     static size_type buffer_size() { return __deque_buf_size(BufSize, sizeof(T)); }
 
-    iterator start;
-    iterator finish;
-
-    map_pointer map;
-    size_type map_size;
+    iterator     start;
+    iterator     finish;
+    map_pointer  map;
+    size_type    map_size;
 
 protected:
     typedef allocator<value_type>   data_allocator;
@@ -161,22 +149,19 @@ public:
     deque() { initialize_map(0); }
     ~deque() {
         clear();
-		deallocate_node(start.first);
-	}
+        deallocate_node(start.first);
+    }
 
     iterator begin() { return start; }
     iterator end() { return finish; }
-
     reference operator[](size_type n) {
         return start[difference_type(n)];
     }
-
     reference front() { return *start; }
     reference back() {
         iterator tmp = finish;
         return *(--tmp);
     }
-
     size_type size() const { return finish - start; }
     size_type max_size() const { return size_type(-1); }
     bool empty() const { return start == finish; }
@@ -191,22 +176,17 @@ public:
 //TODO(zhuyutian) 初版
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::create_map_and_nodes(size_type num_elememts) {
-    
     const size_type num_nodes = num_elememts / buffer_size() + 1;
-    
     map_size = num_nodes + 2;
     map = map_allocator::allocate(map_size);
-    
     map_pointer nstart = map + 1;
     map_pointer nfinish = nstart + num_nodes - 1;
-    
     try {
         for(map_pointer cur = nstart; cur <= nfinish; ++cur)
             *cur = allocate_node();
     } catch(map_pointer mp) {
         //...
     }
-
     start.set_node(nstart);
     finish.set_node(nfinish);
     start.cur = start.first;
@@ -223,26 +203,22 @@ void deque<T, BufSize>::initialize_map(size_type num_elememts) {
 //可以直接调用
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::reallocate_map(size_type nodes_to_add) {
-
     size_type old_num_nodes = finish.node - start.node + 1;
     size_type new_map_size = map_size + nodes_to_add;
-
     map_pointer new_map = map_allocator::allocate(new_map_size);
     map_pointer new_nstart = new_map + 1;
+    
     map_pointer cur = start.node;
     map_pointer new_cur = new_nstart;   
-
     while(cur <= finish.node) {
         *new_cur = *cur;
         ++cur;
         ++new_cur;
     }
-
+    
     map_allocator::deallocate(map, map_size);
-
     map = new_map;
     map_size = new_map_size;
-
     start.set_node(new_nstart);
     finish.set_node(new_nstart + old_num_nodes - 1);
 }
@@ -264,11 +240,8 @@ void deque<T, BufSize>::reserve_map_at_front() {
 //TODO(zhuyutian) 简化版策略
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::push_back_aux(const value_type& t) {
-    
     reserve_map_at_back();
-    
     *(finish.node + 1) = allocate_node();
-    
     construct(finish.cur, t);
     finish.set_node(finish.node + 1);
     finish.cur = finish.first;
@@ -287,11 +260,8 @@ void deque<T, BufSize>::push_back(const value_type& t) {
 //TODO(zhuyutian) 简化版策略
 template <typename T, size_t BufSize>
 void deque<T, BufSize>::push_front_aux(const value_type& t) {
-    
     reserve_map_at_front();
-
     *(start.node - 1) = allocate_node();
-    
     start.set_node(start.node - 1);
     start.cur = start.last - 1;
     construct(start.cur, t);
@@ -349,7 +319,6 @@ void deque<T, BufSize>::clear() {
         destroy(*cur, *cur + buffer_size());
         deallocate_node(*cur);
     }
-    
     if(start.node != finish.node) {
         destroy(start.cur, start.last);
         destroy(finish.first, finish.cur);

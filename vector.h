@@ -120,6 +120,6 @@ void vector<T, Alloc>::insert_aux(iterator position, const T& x) {
     }
 }
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_VECTOR_H

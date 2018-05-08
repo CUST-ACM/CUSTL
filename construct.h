@@ -41,6 +41,6 @@ template <typename ForwardIterator>
 inline void destroy(ForwardIterator first, ForwardIterator last) {
     __destroy(first, last, value_type(first));
 }
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_CONSTRUCT_H

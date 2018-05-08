@@ -1,28 +1,55 @@
+/* file: deque_demo.cpp
+ * date: 2018/05/08
+ * author: zhuyutian
+ */
 
-#include "deque.h"
 #include <iostream>
 
+#include "deque.h"
+
+struct Node {
+    int x;
+    Node(int x):x(x){}
+};
+
 int main(){
-    custl::deque<int> Q;
-	Q.clear();
-    std::cout << Q.size() << '\n';
+    custl::deque<Node> dqnode;
+    dqnode.push_back(Node(1));
+    dqnode.push_front(Node(2));
+    dqnode.push_back(Node(3));
+    dqnode.push_front(Node(4));
+    std::cout << dqnode[0].x << '\n';
+    std::cout << dqnode.front().x << '\n';
+    std::cout << dqnode.back().x << '\n';
+    std::cout << dqnode.size() << '\n';
+    dqnode.pop_back();
+    std::cout << dqnode.front().x << '\n';
+    std::cout << dqnode.back().x << '\n';
+    std::cout << dqnode.size() << '\n'; 
+
+    custl::deque<int> dqint;
+    dqint.clear();
+    std::cout << dqint.size() << '\n';
     for(int i = 0; i < 1001; i++)
-        Q.push_back(1);
-    std::cout << *Q.begin() << '\n';
-    std::cout << Q.back() << '\n';
-    std::cout << Q.front() << '\n';
-    std::cout << Q.size() << '\n';
-    Q.pop_back();
-    std::cout << Q.size() << '\n';
-    Q.pop_front();
-    std::cout << Q.size() << '\n';
-    Q.clear();
-    std::cout<<Q.size()<<'\n';
+        dqint.push_back(i);
+    std::cout << dqint[0] << '\n';
+    std::cout << dqint[1] << '\n';
+    std::cout << *dqint.begin() << '\n';
+    std::cout << dqint.back() << '\n';
+    std::cout << dqint.front() << '\n';
+    std::cout << dqint.size() << '\n';
+    dqint.pop_back();
+    std::cout << dqint.size() << '\n';
+    dqint.pop_front();
+    std::cout << dqint.size() << '\n';
+    dqint.clear();
+    std::cout << dqint.size() << '\n';
+    
     for(int i = 0; i < 10; i++) {
-        if(i > 5) Q.push_back(i);
-        else Q.push_front(i);
+        if(i > 5) dqint.push_back(i);
+        else dqint.push_front(i);
     }
-    for(custl::deque<int>::iterator it = Q.begin(); it != Q.end(); it++)
+    for(custl::deque<int>::iterator it = dqint.begin(); it != dqint.end(); it++)
         std::cout << *it << ' ';
     std::cout << '\n';
     return 0;

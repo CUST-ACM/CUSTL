@@ -349,18 +349,20 @@ inline _Rb_tree_node_base* _Rb_tree_rebalance_for_erase(
             __z->_M_parent->_M_left = __x;
         else
             __z->_M_parent->_M_right = __x;
-        if (__leftmost == __z)
+        if (__leftmost == __z) {
             if (__z->_M_right == 0)
                 __leftmost = __z->_M_parent;
 
             else
                 __leftmost = _Rb_tree_node_base::_S_minimum(__x);
-        if (__rightmost == __z)
+        }
+        if (__rightmost == __z) {
             if (__z->_M_left == 0)
                 __rightmost = __z->_M_parent;
 
             else
                 __rightmost = _Rb_tree_node_base::_S_maximum(__x);
+        }
     }
     if (__y->_M_color != red) {
         while (__x != __root && (__x == 0 || __x->_M_color == black))
@@ -553,9 +555,9 @@ class _Rb_tree {
         _M_empty_initialize();
     }
     _Rb_tree(const _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x)
-        : _M_node_count(0), _M_key_compare(__x._M_key_compare()) {
+        : _M_node_count(0), _M_key_compare(__x._M_key_compare) {
         if (__x._M_root() == nullptr)
-            _M_empty_initialize(0);
+            _M_empty_initialize();
         else {
             _S_color(_M_header) = red;
             _M_root() = _M_copy(__x._M_root(), _M_header);
@@ -692,7 +694,6 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&
 _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::operator=(
     const _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x) {
     if (this != &__x) {
-        // Note that _Key may be a constant type.
         clear();
         _M_node_count = 0;
         _M_key_compare = __x._M_key_compare;
@@ -772,11 +773,12 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::insert_unique(
         __x = __comp ? _S_left(__x) : _S_right(__x);
     }
     iterator __j = iterator(__y);
-    if (__comp)
+    if (__comp) {
         if (__j == begin())
             return std::pair<iterator, bool>(_M_insert(__x, __y, __v), true);
         else
             --__j;
+    }
     if (_M_key_compare(_S_key(__j._M_node), _KeyOfValue()(__v)))
         return std::pair<iterator, bool>(_M_insert(__x, __y, __v), true);
     return std::pair<iterator, bool>(__j, false);

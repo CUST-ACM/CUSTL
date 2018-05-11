@@ -28,20 +28,31 @@ int main()
     it++;
     List.insert(it, 233); print();
 
-    it = List.begin(); it--; it--;
-    List.insert(it, 2333); print();
+    it = List.begin();
+    it--;
+    it--;
+    List.insert(it, 2333);
+    print();
     
     it = List.begin();
-    it++; it++;
-    List.erase(it); print();
+    it++;
+    it++;
+    List.erase(it);
+    print();
     
-    List.pop_front(); print();
-    List.pop_back(); print();
+    List.pop_front();
+    print();
+    
+    List.pop_back();
+    print();
+    
     std::cout << List.size() << std::endl;
     List.clear();
     std::cout << List.size() << std::endl;
     
-    if (List.empty()) std::cout << "empty!" << std::endl;
+    if (List.empty())
+        std::cout << "empty!" << std::endl;
+    
     for (int i = 0; i < test_num; ++i) {
         List.push_back(233);
     }

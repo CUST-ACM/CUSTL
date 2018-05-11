@@ -7,16 +7,17 @@ EXE_DIR = ./bin
 CFLAGS = -g -Wall
 LFLAGS = 
 
-objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-executables := $(patsubst %.cpp,%,$(wildcard *.cpp))
+objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp) $(wildcard test/*.cpp))
+executables := $(patsubst %.cpp,%,$(wildcard *.cpp) $(wildcard test/*.cpp))
 
 all : $(objects)
 $(objects) :%.o : %.cpp
-	@mkdir -p ./bin$
-	$(cc) -c $(CFLAGS) $< -o $@
-	$(cc) $(CFLAGS) $< -o $(subst .o, ,$(EXE_DIR)/$@) $(LFLAGS) $(LIBS)
-test:
+	@mkdir -p ./bin
+	$(cc) -c $(CFLAGS) $< -o $(EXE_DIR)/$(notdir $@)
+	$(cc) $(CFLAGS) $< -o $(subst .o, ,$(EXE_DIR)/$(notdir $@)) $(LFLAGS) $(LIBS)
+check:
+	@./bin/vector_demo
+	@./bin/Rb_tree_test
 clean:
-	@rm -f *.o rm -f $(executables)
-	@rm -rf ./bin 
+	@rm -r ./bin
 distclean: clean

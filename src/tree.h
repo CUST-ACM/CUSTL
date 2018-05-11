@@ -102,7 +102,7 @@ struct _Rb_tree_iterator {
     }
 
     void _M_decrement() {
-        if (_M_node->_M_color == red &&
+        if (_M_node->_M_color == red && _M_node->_M_parent != nullptr &&
             _M_node->_M_parent->_M_parent == _M_node)
             _M_node = _M_node->_M_right;
         else if (_M_node->_M_right != nullptr) {
@@ -556,6 +556,7 @@ class _Rb_tree {
     }
     _Rb_tree(const _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x)
         : _M_node_count(0), _M_key_compare(__x._M_key_compare) {
+            _M_header = _M_get_node();
         if (__x._M_root() == nullptr)
             _M_empty_initialize();
         else {
@@ -573,7 +574,8 @@ class _Rb_tree {
    private:
     void _M_empty_initialize() {
         _S_color(_M_header) = red;
-        _M_root() = _M_rightmost() = _M_leftmost() = nullptr;
+        _M_root() = nullptr;
+        _M_rightmost() = _M_leftmost() = _M_header;
     }
 
    public:

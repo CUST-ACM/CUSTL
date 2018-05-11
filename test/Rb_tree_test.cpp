@@ -16,6 +16,9 @@ int main() {
     assert(tree.size() == 0);
     std::cout << "max_size: " << tree.max_size() << std::endl;
 
+    tree.insert_unique(1);
+    tree.clear();
+
     // Insert unique test
     tree.insert_equal(1);
     assert(tree.size() == 1);
@@ -66,4 +69,9 @@ int main() {
     custl::_Rb_tree<int, int, std::_Identity<int>, std::less<int>> t1;
     for (int i = 1; i <= 10; i++) t1.insert_unique(i);
     custl::_Rb_tree<int, int, std::_Identity<int>, std::less<int>> t2(t1);
+    {
+        int t = 1;
+        for(auto it=t2.begin();it!=t2.end();it++,t++)
+            assert(*it == t);
+    }
 }

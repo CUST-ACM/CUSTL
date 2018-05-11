@@ -42,6 +42,6 @@ public:
     typedef void* pointer;
 };
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_ALLOCATOR_H

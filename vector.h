@@ -48,7 +48,7 @@ protected:
 public:
     vector() : start(0), finish(0), end_of_storage(0) {}
     ~vector(){
-        destory(start, finish);
+        destroy(start, finish);
         deallocate();
     }
 
@@ -71,7 +71,7 @@ public:
     }
     void pop_back() {
         --finish;
-        destory(finish);
+        destroy(finish);
     }
     iterator insert(const_iterator position, const value_type& x) {
         int n = position - begin();
@@ -111,7 +111,7 @@ void vector<T, Alloc>::insert_aux(iterator position, const T& x) {
             ++new_finish;
         }
 
-        destory(start, finish);
+        destroy(start, finish);
         deallocate();
 
         start = new_start;
@@ -120,6 +120,6 @@ void vector<T, Alloc>::insert_aux(iterator position, const T& x) {
     }
 }
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_VECTOR_H

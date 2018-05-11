@@ -11,6 +11,6 @@ namespace custl {
 typedef unsigned int    size_t;
 typedef int             ptrdiff_t;
 
-}; // namespace custl
+} // namespace custl
 
 #endif // _CUSTL_CONFIG_H

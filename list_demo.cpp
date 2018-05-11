@@ -24,7 +24,7 @@ int main()
     for (int i = test_num; i > 0; i--) List.push_front(i);
     print();
     
-	csutl::list<int>::iterator it = List.begin();
+	custl::list<int>::iterator it = List.begin();
     it++;
     List.insert(it, 233); print();
 

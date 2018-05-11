@@ -12,7 +12,7 @@ int test_num = 10;
 
 void print()
 {
-    for (auto it = List.begin(); it != List.end(); ++it) {
+    for (custl::list<int>::iterator it = List.begin(); it != List.end(); ++it) {
         std::cout << (*it) << " ";
     }
     std::cout << std::endl;
@@ -24,7 +24,7 @@ int main()
     for (int i = test_num; i > 0; i--) List.push_front(i);
     print();
     
-    auto it = List.begin();
+	csutl::list<int>::iterator it = List.begin();
     it++;
     List.insert(it, 233); print();
 

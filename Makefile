@@ -4,7 +4,7 @@ ROOTDIR = .
 cc = g++
 
 EXE_DIR = ./bin
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -std=c++11
 LFLAGS = 
 
 objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp) $(wildcard test/*.cpp))

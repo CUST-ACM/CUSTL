@@ -1,13 +1,22 @@
 /**
  * file: Rb_tree_test.h
- * Author: F-TD5X(jhx)
  * date: 2018-05-08 20:11
+ * author: F-TD5X(jhx)
  **/
 
 #include <assert.h>
 #include <iostream>
 #include <utility>
 #include "tree.h"
+
+struct Node {
+    int a;
+    Node() { a = 0; }
+    Node(int a) : a(a) {}
+    bool operator<(const Node &t) const { return a < t.a; }
+};
+
+int cmp(Node a, Node b) { return a.a < b.a; }
 
 int main() {
     // Init
@@ -70,9 +79,20 @@ int main() {
     custl::_Rb_tree<int, int, std::_Identity<int>, std::less<int>> t2(t1);
     {
         int t = 1;
-        for(auto it=t2.begin();it!=t2.end();it++,t++)
-            assert(*it == t);
+        for (auto it = t2.begin(); it != t2.end(); it++, t++) assert(*it == t);
     }
 
-    std::cout <<"Rb tree Unit test passed"<<std::endl;
+    // structure
+
+    custl::rb_tree<Node, Node, std::_Identity<Node>, std::less<Node>> t3;
+    for (int i = 1; i <= 10; i++) t3.insert_unique(Node(i));
+    assert((*(++t3.begin())).a == 2);
+
+    // Compare Function
+    custl::rb_tree<Node,Node,std::_Identity<Node>,cmp> t4;
+    for(int i=1;i<=10;i++)
+        t4.insert_unique(Node(i));
+    assert((*(++t4.begin())).a == 2);
+
+    std::cout << "Rb tree Unit test passed" << std::endl;
 }

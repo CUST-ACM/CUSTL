@@ -1,14 +1,13 @@
 /**
- * Title: Rb Tree Test
- * Description: Rb Tree Unit Test
+ * file: Rb_tree_test.h
  * Author: F-TD5X(jhx)
- * Update: 2018-05-08 20:23
+ * date: 2018-05-08 20:11
  **/
 
 #include <assert.h>
 #include <iostream>
 #include <utility>
-#include "../src/tree.h"
+#include "tree.h"
 
 int main() {
     // Init
@@ -74,4 +73,6 @@ int main() {
         for(auto it=t2.begin();it!=t2.end();it++,t++)
             assert(*it == t);
     }
+
+    std::cout <<"Rb tree Unit test passed"<<std::endl;
 }

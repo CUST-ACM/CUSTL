@@ -1,5 +1,6 @@
 language: cpp
 before_script:  
+  - cd Source
   - chmod +x ./configure
 script:
   - ./configure && make && make check

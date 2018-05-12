@@ -1,8 +1,7 @@
 /**
- * Title: Rb Tree
- * Description: CUSTL Red-Black Tree
+ * file: tree.h
  * Author: F-TD5X(jhx)
- * Update: 2018-05-08 20:11
+ * date: 2018-05-08 20:11
  **/
 
 #ifndef _CUSTL_TREE_H
@@ -10,7 +9,7 @@
 
 #include <iterator>
 #include <utility>
-#include "../allocator.h"
+#include "allocator.h"
 
 namespace custl {
 

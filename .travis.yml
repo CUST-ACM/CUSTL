@@ -1,6 +1,16 @@
 language: cpp
+addons:
+  apt:
+    update: true
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-7
+      - g++-7
+env:
+  - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_script:  
+  - eval ${MATRIX_EVAL}
   - cd Source
-  - chmod +x ./configure
 script:
-  - ./configure && make && make check
+- make && make check

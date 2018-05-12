@@ -16,7 +16,9 @@ struct Node {
     bool operator<(const Node &t) const { return a < t.a; }
 };
 
-int cmp(Node a, Node b) { return a.a < b.a; }
+struct cmp{
+    bool operator()(Node a,Node b){return a.a < b.a;}
+};
 
 int main() {
     // Init
@@ -89,7 +91,7 @@ int main() {
     assert((*(++t3.begin())).a == 2);
 
     // Compare Function
-    custl::rb_tree<Node,Node,std::_Identity<Node>,cmp> t4;
+    custl::_Rb_tree<Node,Node,std::_Identity<Node>,cmp> t4;
     for(int i=1;i<=10;i++)
         t4.insert_unique(Node(i));
     assert((*(++t4.begin())).a == 2);

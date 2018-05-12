@@ -471,8 +471,8 @@ class _Rb_tree {
         return __tmp;
     }
 
-    void destory_node(_Link_type __p) {
-        destory(&__p->_M_Val_field);
+    void destroy_node(_Link_type __p) {
+        destroy(&__p->_M_Val_field);
         _M_put_node(__p);
     }
 
@@ -877,7 +877,7 @@ inline void _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::erase(
     _Link_type __y = (_Link_type)_Rb_tree_rebalance_for_erase(
         __position._M_node, _M_header->_M_parent, _M_header->_M_left,
         _M_header->_M_right);
-    destory_node(__y);
+    destroy_node(__y);
     --_M_node_count;
 }
 
@@ -926,7 +926,7 @@ void _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_erase(
     while (__x != 0) {
         _M_erase(_S_right(__x));
         _Link_type __y = _S_left(__x);
-        destory_node(__x);
+        destroy_node(__x);
         __x = __y;
     }
 }

@@ -11,8 +11,7 @@
 #include "set.h"
 
 int main() {
-
-    //test 1
+    // test 1 default construct, insert and find
     custl::set<int> s1;
     assert(s1.empty());
     std::cout << s1.max_size() << std::endl;
@@ -27,10 +26,13 @@ int main() {
     s1.clear();
     assert(s1.empty());
 
-    //test 2
-    custl::set<int> s2(s1.begin(),s1.end());
-    std::cout << s2.size() << std::endl;
+    // test 2 copy construct
+    for (int i = 0; i < 10; i++) s1.insert(i);
+    custl::set<int> s2(s1.begin(), s1.end());
     assert(s2.size() == 10);
+    custl::set<int, std::greater<int>> s3(s1.begin(), s1.end(),
+                                          std::greater<int>());
+    assert(*s3.begin() == 9);
 
     std::cout << "Set test passed" << std::endl;
 }

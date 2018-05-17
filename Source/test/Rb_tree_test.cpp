@@ -37,6 +37,8 @@ int main() {
     custl::_Rb_tree<int, int, std::_Identity<int>, std::less<int>>::iterator
         it = tree.begin();
     for (int i = 1; it != tree.end(); ++it, ++i) assert(*it == i);
+    assert(*(++tree.lower_bound(2)) == 3);
+    assert(*tree.upper_bound(2) == 3);
 
     // Cleaer test
     tree.clear();

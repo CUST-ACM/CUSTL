@@ -427,12 +427,12 @@ inline _Rb_tree_node_base* _Rb_tree_rebalance_for_erase(
 template <typename _Key, typename _Val, typename _KeyOfValue, typename _Compare,
           typename _Alloc = allocator<_Val>>
 class _Rb_tree {
-   protected:
+protected:
     typedef _Rb_tree_node_base* _Base_ptr;
     typedef _Rb_tree_color _Color_type;
     typedef _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> _Self;
 
-   public:
+public:
     typedef _Key key_type;
     typedef _Val value_type;
     typedef value_type* pointer;
@@ -446,7 +446,7 @@ class _Rb_tree {
 
     allocator_type get_allocator() const { return allocator_type(); }
 
-   protected:
+protected:
     _Link_type _M_header;
     _Link_type _M_get_node() {
         return allocator<_Rb_tree_node<_Val>>::allocate(1);
@@ -475,7 +475,7 @@ class _Rb_tree {
         _M_put_node(__p);
     }
 
-   protected:
+protected:
     size_type _M_node_count;
     _Compare _M_key_compare;
 
@@ -529,16 +529,16 @@ class _Rb_tree {
         return (_Link_type)_Rb_tree_node_base::_S_maximum(__x);
     }
 
-   public:
+public:
     typedef _Rb_tree_iterator<_Val> iterator;
     typedef _Rb_tree_const_iterator<_Val> const_iterator;
 
-   private:
+private:
     iterator _M_insert(_Base_ptr __x, _Base_ptr __y, const value_type& __v);
     _Link_type _M_copy(_Link_type __x, _Link_type __p);
     void _M_erase(_Link_type __x);
 
-   public:
+public:
     _Rb_tree() : _M_node_count(0), _M_key_compare() {
         _M_header = _M_get_node();
         _M_empty_initialize();
@@ -570,21 +570,21 @@ class _Rb_tree {
     _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& operator=(
         const _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x);
 
-   private:
+private:
     void _M_empty_initialize() {
         _S_color(_M_header) = red;
         _M_root() = nullptr;
         _M_rightmost() = _M_leftmost() = _M_header;
     }
 
-   public:
+public:
     _Compare key_comp() const { return _M_key_compare; }
     iterator begin() { return _M_leftmost(); }
     iterator end() { return _M_header; }
     const_iterator begin() const { return _M_leftmost(); }
     const_iterator end() const { return _M_header; }
 
-    bool empty() { return _M_node_count == 0; }
+    bool empty() const { return _M_node_count == 0; }
     size_type size() const { return _M_node_count; }
     size_type max_size() const { return size_type(-1); }
 
@@ -594,7 +594,7 @@ class _Rb_tree {
         swap(_M_key_compare, __t._M_key_compare);
     }
 
-   public:
+public:
     std::pair<iterator, bool> insert_unique(const value_type& __x);
     iterator insert_equal(const value_type& __x);
     iterator insert_unique(iterator __pos, const value_type& __x);
@@ -603,6 +603,10 @@ class _Rb_tree {
     void insert_unique(const value_type* __first, const value_type* __last);
     void insert_equal(const_iterator __first, const_iterator __last);
     void insert_equal(const value_type* __first, const value_type* __last);
+    template <typename _InsertIterator>
+    void insert_unique(_InsertIterator __first, _InsertIterator __last);
+    template <typename _InsertIterator>
+    void insert_equal(_InsertIterator __first, _InsertIterator __last);
 
     void erase(iterator __pos);
     size_type erase(const key_type& __x);
@@ -845,25 +849,29 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::insert_equal(
     }
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Cmp, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Cmp,
+          typename _Alloc>
 void _Rb_tree<_Key, _Val, _KoV, _Cmp, _Alloc>::insert_equal(
     const _Val* __first, const _Val* __last) {
     for (; __first != __last; ++__first) insert_equal(*__first);
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Cmp, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Cmp,
+          typename _Alloc>
 void _Rb_tree<_Key, _Val, _KoV, _Cmp, _Alloc>::insert_equal(
     const_iterator __first, const_iterator __last) {
     for (; __first != __last; ++__first) insert_equal(*__first);
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Cmp, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Cmp,
+          typename _Alloc>
 void _Rb_tree<_Key, _Val, _KoV, _Cmp, _Alloc>::insert_unique(
     const _Val* __first, const _Val* __last) {
     for (; __first != __last; ++__first) insert_unique(*__first);
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Cmp, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Cmp,
+          typename _Alloc>
 void _Rb_tree<_Key, _Val, _KoV, _Cmp, _Alloc>::insert_unique(
     const_iterator __first, const_iterator __last) {
     for (; __first != __last; ++__first) insert_unique(*__first);
@@ -891,7 +899,8 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::erase(const _Key& __x) {
     return __n;
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Compare, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Compare,
+          typename _Alloc>
 typename _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::_Link_type
 _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::_M_copy(_Link_type __x,
                                                       _Link_type __p) {
@@ -1073,7 +1082,8 @@ _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::equal_range(
     return std::pair<iterator, iterator>(lower_bound(__k), upper_bound(__k));
 }
 
-template <typename _Key, typename _Val, typename _KoV, typename _Compare, typename _Alloc>
+template <typename _Key, typename _Val, typename _KoV, typename _Compare,
+          typename _Alloc>
 inline std::pair<
     typename _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::const_iterator,
     typename _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::const_iterator>
@@ -1127,6 +1137,22 @@ bool _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::__verify() const {
         return false;
 
     return true;
+}
+
+template <typename _Key, typename _Val, typename _KeyOfValue, typename _Compare,
+          typename _Alloc>
+template <typename _II>
+void _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::insert_unique(
+    _II __first, _II __last) {
+    for (; __first != __last; ++__first) insert_unique(*__first);
+}
+
+template <typename _Key, typename _Val, typename _KeyOfValue, typename _Compare,
+          typename _Alloc>
+template <typename _II>
+void _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::insert_equal(
+    _II __first, _II __last) {
+    for (; __first != __last; ++__first) insert_equal(*__first);
 }
 
 template <typename _Key, typename _Val, typename _KeyOfValue, typename _Compare,

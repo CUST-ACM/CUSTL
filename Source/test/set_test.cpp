@@ -33,8 +33,14 @@ int main() {
     custl::set<int, std::greater<int>> s3(s1.begin(), s1.end(),
                                           std::greater<int>());
     assert(*s3.begin() == 9);
+<<<<<<< HEAD
     // test swap
     swap(s1,s2);
 
     std::cout << "Set test passed" << std::endl;
 }
+=======
+
+    std::cout << "Set test passed" << std::endl;
+}
+>>>>>>> 0906d1f40265f4782aa8f7e8533ab49125c99c2f

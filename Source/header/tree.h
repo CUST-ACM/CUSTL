@@ -589,9 +589,9 @@ public:
     size_type max_size() const { return size_type(-1); }
 
     void swap(_Self& __t) {
-        swap(_M_header, __t._M_header);
-        swap(_M_node_count, __t._M_node_count);
-        swap(_M_key_compare, __t._M_key_compare);
+        std::swap(_M_header, __t._M_header);
+        std::swap(_M_node_count, __t._M_node_count);
+        std::swap(_M_key_compare, __t._M_key_compare);
     }
 
 public:

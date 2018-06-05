@@ -76,6 +76,7 @@ int main() {
 
     // Structure verify
     assert(tree.__verify());
+    tree.clear();
 
     // copy test
     custl::_Rb_tree<int, int, std::_Identity<int>, std::less<int>> t1;
@@ -97,6 +98,9 @@ int main() {
     for(int i=1;i<=10;i++)
         t4.insert_unique(Node(i));
     assert((*(++t4.begin())).a == 2);
+
+    //swap test
+    t1.swap(tree);
 
     std::cout << "Rb tree Unit test passed" << std::endl;
 }

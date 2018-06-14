@@ -21,6 +21,7 @@ check:
 	@bin/deque_demo
 	@bin/list_demo
 	@bin/Rb_tree_test
+	@bin/set_test
 clean:
 	@rm -r bin
 distclean: clean

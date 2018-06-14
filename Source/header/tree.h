@@ -428,21 +428,21 @@ template <typename _Key, typename _Val, typename _KeyOfValue, typename _Compare,
           typename _Alloc = allocator<_Val>>
 class _Rb_tree {
 protected:
-    typedef _Rb_tree_node_base* _Base_ptr;
-    typedef _Rb_tree_color _Color_type;
+    typedef _Rb_tree_node_base*                                 _Base_ptr;
+    typedef _Rb_tree_color                                      _Color_type;
     typedef _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc> _Self;
 
 public:
-    typedef _Key key_type;
-    typedef _Val value_type;
-    typedef value_type* pointer;
-    typedef value_type& reference;
-    typedef const value_type* const_pointer;
-    typedef const value_type& const_reference;
-    typedef _Rb_tree_node<_Val>* _Link_type;
-    typedef size_t size_type;
-    typedef ptrdiff_t difference_type;
-    typedef _Alloc allocator_type;
+    typedef _Key                    key_type;
+    typedef _Val                    value_type;
+    typedef value_type*             pointer;
+    typedef value_type&             reference;
+    typedef const value_type*       const_pointer;
+    typedef const value_type&       const_reference;
+    typedef _Rb_tree_node<_Val>*    _Link_type;
+    typedef size_t                  size_type;
+    typedef ptrdiff_t               difference_type;
+    typedef _Alloc                  allocator_type;
 
     allocator_type get_allocator() const { return allocator_type(); }
 

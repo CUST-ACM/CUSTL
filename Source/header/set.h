@@ -18,10 +18,10 @@ class set;
 template <typename _Key, typename _Compare, class _Alloc>
 class set {
    public:
-    typedef _Key key_type;
-    typedef _Key value_type;
-    typedef _Compare key_compare;
-    typedef _Compare value_compare;
+    typedef _Key        key_type;
+    typedef _Key        value_type;
+    typedef _Compare    key_compare;
+    typedef _Compare    value_compare;
 
    private:
     typedef _Rb_tree<key_type, value_type, std::_Identity<value_type>, key_compare,
@@ -30,15 +30,15 @@ class set {
     _Rep_type _M_t;
 
    public:
-    typedef typename _Rep_type::const_pointer pointer;
-    typedef typename _Rep_type::const_pointer const_pointer;
+    typedef typename _Rep_type::const_pointer   pointer;
+    typedef typename _Rep_type::const_pointer   const_pointer;
     typedef typename _Rep_type::const_reference reference;
     typedef typename _Rep_type::const_reference const_reference;
-    typedef typename _Rep_type::const_iterator iterator;
-    typedef typename _Rep_type::const_iterator const_iterator;
-    typedef typename _Rep_type::size_type size_type;
+    typedef typename _Rep_type::const_iterator  iterator;
+    typedef typename _Rep_type::const_iterator  const_iterator;
+    typedef typename _Rep_type::size_type       size_type;
     typedef typename _Rep_type::difference_type difference_type;
-    typedef typename _Rep_type::allocator_type allocator_type;
+    typedef typename _Rep_type::allocator_type  allocator_type;
     set() : _M_t(_Compare(), allocator_type()) {}
     explicit set(const _Compare& __comp,
                  const allocator_type& __a = allocator_type())
